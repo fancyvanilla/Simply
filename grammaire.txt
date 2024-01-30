@@ -1,0 +1,45 @@
+// version1
+
+1. Program    -> DeclList StmtList
+2. DeclList   -> Declaration DeclList | ε
+3. Declaration-> var id ;
+4. StmtList   -> Stmt StmtList | ε
+5. Stmt       -> Assignment | IfStatement | WhileLoop | FuncCall ;
+6. Assignment -> id = Expr ;
+7. IfStatement-> if (Expr) Stmt else Stmt
+8. WhileLoop  -> while (Expr) Stmt
+9-FuncCall -> id( Args ) 
+10-Args -> ArgList | ε
+11-ArgList -> Arg | Arg, ArgList
+12-Arg -> id | num | string | FuncCall 
+
+//version2 handle expressions in function arguments and function definition
+
+1. Program       -> DeclList StmtList FuncList
+2. DeclList      -> Declaration DeclList | ε
+3. Declaration   -> var id ;
+4. StmtList      -> Stmt StmtList | ε
+5. Stmt          -> Assignment | IfStatement | WhileLoop | FuncCall ;
+6. Assignment    -> id = Expr ;
+7. IfStatement   -> if (Expr) Stmt else Stmt
+8. WhileLoop     -> while (Expr) Stmt
+
+// Function definitions
+9. FuncList      -> FuncDef FuncList | ε
+10. FuncDef      -> func id ( ParamList ) FuncBody ;
+11. FuncBody     -> StmtList ReturnStmt ;
+12. ParamList     -> Param | Param, ParamList | ε
+13. Param        -> Type id
+
+// Return statement
+14. ReturnStmt   -> return Expr ; | ε
+
+// Function calls
+15. FuncCall      -> id ( ArgList ) ;
+16. ArgList      -> ExprList | ε
+17. ExprList     -> Expr , ExprList | Expr
+18. Expr         -> Term Expr'
+19. Expr'        -> + Term Expr' | ε
+20. Term         -> Factor Term'
+21. Term'        -> * Factor Term' | ε
+22. Factor       -> ( Expr ) | id | num | FuncCall

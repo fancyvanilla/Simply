@@ -15,7 +15,7 @@ M'  -> / F M'
 M'  -> ''
 F   -> id
 F   -> N
-F   -> - F
+F   -> - N
 CE  -> AE R AE
 N   -> C N'
 N'  -> C N'

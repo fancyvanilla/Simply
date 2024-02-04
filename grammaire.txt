@@ -1,3 +1,4 @@
+P -> SL
 SL  -> S SL
 SL  -> ''
 S   -> id = AE ;

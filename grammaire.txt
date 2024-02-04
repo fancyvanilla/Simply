@@ -1,40 +1,37 @@
-// Version 1
-
-Program -> DeclList StmtList
-DeclList -> Declaration DeclList | ε
-Declaration -> var id ;
-StmtList -> Stmt StmtList | ε
-Stmt -> Assignment | IfStatement | WhileLoop | FuncCall ;
-Assignment -> id = Expr ;
-IfStatement -> if (Expr) Stmt else Stmt
-WhileLoop -> while (Expr) Stmt
-FuncCall -> id ( Args )
-Args -> ArgList | ε
-ArgList -> Arg | Arg, ArgList
-Arg -> id | num | string | FuncCall
-
-// Version 2
-
-Program -> DeclList StmtList FuncList
-DeclList -> Declaration DeclList | ε
-Declaration -> var id ;
-StmtList -> Stmt StmtList | ε
-Stmt -> Assignment | IfStatement | WhileLoop | FuncCall ;
-Assignment -> id = Expr ;
-IfStatement -> if (Expr) Stmt else Stmt
-WhileLoop -> while (Expr) Stmt
-FuncList -> FuncDef FuncList | ε
-FuncDef -> func id ( ParamList ) FuncBody ;
-FuncBody -> StmtList ReturnStmt ;
-ParamList -> Param | Param, ParamList | ε
-Param -> id
-ReturnStmt -> return Expr ; | ε
-FuncCall -> id ( ArgList ) ;
-ArgList -> ExprList | ε
-ExprList -> Expr , ExprList | Expr
-Expr -> Term Expr'
-Expr' -> + Term Expr' | ε
-Term -> Factor Term'
-Term' -> * Factor Term' | ε
-Factor -> ( Expr ) | id | num | FuncCall
+SL  -> S SL
+SL  -> ''
+S   -> id = AE ;
+S   -> if ( CE ) S else S
+S   -> while ( CE ) S
+AE  -> T AE'
+AE' -> + T AE'
+AE' -> ''
+T   -> M T'
+T'  -> * M T'
+T'  -> ''
+M   -> F M'
+M'  -> / F M'
+M'  -> ''
+F   -> id
+F   -> N
+F   -> - F
+CE  -> AE R AE
+N   -> C N'
+N'  -> C N'
+N'  -> ''
+C   -> 0
+C   -> 1
+C   -> 2
+C   -> 3
+C   -> 4
+C   -> 5
+C   -> 6
+C   -> 7
+C   -> 8
+C   -> 9
+R   -> ==
+R   -> != 
+R   -> <= 
+R   -> > 
+R   -> >=
 

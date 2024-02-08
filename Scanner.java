@@ -15,7 +15,7 @@ Alors que des éléments peuvent être ajoutés et supprimés d'un ArrayListfich
 */
 
 public class Scanner {
-    private ArrayList<Character> fluxCaracteres;
+    public ArrayList<Character> fluxCaracteres;
     private int indiceCourant;
     private char caractereCourant;
     private boolean eof;
@@ -218,13 +218,9 @@ public UniteLexicale getOPPRel() {
                 case 1:
                     if (eof)
                         return new UniteLexicale(Categorie.OPPRel, "EGA");
-                        break;
-                    else 
                         reculer();
                         return new UniteLexicale(Categorie.OPPRel, "EGA");
-                        
-                    
-                
+
                 case 2:
                     if (eof)
                         break;

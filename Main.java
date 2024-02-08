@@ -1,25 +1,18 @@
-package compilateurnewversion;
-
-
-
-
-
-
+package parserexemple;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
-import TPIF3PARSER.parserIF3;
-import TPIF3PARSER.anallex;
-
+//import parserIF3
+//import TPIF3PARSER.anallex;
 
 public class Main {
     public static void main(String[] args) {
     	
-    	anallex anaLex=new anallex();
-		anaLex.lecture();
-		
+    	Scanner anaLex=new Scanner();
+
+		//anaLex.lecture();
 		 /*  System.out.println("remplissage du tableaullll");
 		 for( int i=0; i<anaLex.fluxCaracteres.size();i++)
 		       	
@@ -31,14 +24,13 @@ public class Main {
     	String ss=" ";
     	 for( int i=0; i<anaLex.fluxCaracteres.size();i++)
     		// if (!tab[i].equals(ss))
-    		 tab[i]= anaLex.fluxCaracteres.get(i);
+    		 tab[i]= String.valueOf(anaLex.fluxCaracteres.get(i));
     	 
     	 for( int i=0; i<taille;i++)
-		       	
 		       	System.out.println(tab[i]);
-    	 System.out.println("***********************Analyse Syntaxique*************************");	 
-    	 
-		 parsernew test22 = new parserIF3();
+    	 System.out.println("***********************Analyse Syntaxique*************************");
+
+		parserIF3 test22 = new parserIF3();
     	
         
         test22.analyzeSLnew(tab);

@@ -1,5 +1,4 @@
-package compilateurnewversion;
-
+package parserexemple;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
-public class parsernew {
+public class parserIF3 {
 
 
 public String[] LRGS = {"S->AB",
@@ -29,13 +28,9 @@ public String[][] tableSLR = {
             {"6", "s7", "s6", "err", "err", "err", "9"},
             {"7", "err", "err", "r6", "err", "err", "err"},
             {"8", "r3", "r3", "err", "err", "err", "err"},
-            {"9", "err", "err", "r5", "err", "err", "err"},}
+            {"9", "err", "err", "r5", "err", "err", "err"}};
     
-     
 
-
-   
-    
     public Stack<String> stackState = new Stack<>();
     
     
@@ -70,7 +65,7 @@ public String[][] tableSLR = {
               
             String s = analyse.peek();
             
-            \\String act=Action(s,ch[index]);
+            String act=Action(s,ch[index]);
           
             if (Action(s,ch[index]).charAt(0) == 's') {
                    	

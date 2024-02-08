@@ -4,9 +4,8 @@ SL  -> ''
 S   -> id = AE ;
 S   -> if ( CE ) S else S
 S   -> while ( CE ) S
-AE  -> T AE'
-AE' -> + T AE'
-AE' -> ''
+AE -> AE + T
+AE -> T
 T   -> M T'
 T'  -> * M T'
 T'  -> ''
@@ -35,4 +34,3 @@ R   -> !=
 R   -> <= 
 R   -> > 
 R   -> >=
-

@@ -1,36 +1,34 @@
-P -> SL
-SL  -> S SL
-SL  -> ''
-S   -> id = AE ;
-S   -> if ( CE ) S else S
-S   -> while ( CE ) S
-AE -> AE + T
-AE -> T
-T   -> M T'
-T'  -> * M T'
-T'  -> ''
-M   -> F M'
-M'  -> / F M'
-M'  -> ''
-F   -> id
-F   -> N
-F   -> - N
-CE  -> AE R AE
-N   -> C N'
-N'  -> C N'
-N'  -> ''
-C   -> 0
-C   -> 1
-C   -> 2
-C   -> 3
-C   -> 4
-C   -> 5
-C   -> 6
-C   -> 7
-C   -> 8
-C   -> 9
-R   -> ==
-R   -> != 
-R   -> <= 
-R   -> > 
-R   -> >=
+P -> P S
+P -> ''
+S -> id = E ;
+S -> if ( C ) S else S
+S -> while ( C ) S
+E -> E + T
+E -> T
+T -> T * F
+T -> F
+F -> ( E )
+F -> id
+F -> N
+N -> N D
+N -> D
+D   -> 0
+D   -> 1
+D   -> 2
+D   -> 3
+D   -> 4
+D   -> 5
+D   -> 6
+D  -> 7
+D   -> 8
+D   -> 9
+C -> E R E
+R -> ==
+R -> !=
+R -> <
+R -> <=
+R -> >
+R -> >=
+
+
+

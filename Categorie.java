@@ -9,12 +9,11 @@ public enum Categorie{
     PV,
     OPPAff,
     OPPRel,
-      
     ;
 
     
 
-
+//hey
 /*La méthode java string toLowerCase () renvoie la chaîne en minuscules. En d'autres termes,
 il convertit tous les caractères de la chaîne en minuscules. */
 

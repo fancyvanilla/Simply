@@ -108,18 +108,13 @@ public String[][] tableSLR =
                // System.out.println("Partiegauche"+Partiegauche); 
                 
                 String Partiedroite=tabparties[1];
-                //System.out.println("Partiedroite"+Partiedroite); 
-                
+                //System.out.println("Partiedroite"+Partiedroite);
+
                 String tabtoken[]= Partiedroite.split(" ");
                 int taillepile= tabtoken.length +tabtoken.length;
-               
-               
+
                 for (int i = 0; i < taillepile; i++) {
-                	
-                  
-                    
                     analyse.pop();
-                    
                 }
                 String sommetpile = analyse.peek();
                 analyse.push(Partiegauche);
@@ -199,16 +194,17 @@ public String[][] tableSLR =
                // System.out.println("Partiegauche"+Partiegauche); 
                 
                 String Partiedroite=tabparties[1];
-                //System.out.println("Partiedroite"+Partiedroite); 
-                
-                String tabtoken[]= Partiedroite.split(" ");
-                int taillepile= tabtoken.length +tabtoken.length;
-               
-               
-                for (int i = 0; i < taillepile; i++) {
-                    analyse.pop();
-                }
+                //System.out.println("Partiedroite"+Partiedroite);
+                if (!Partiedroite.equals("ε")) {
 
+                    String tabtoken[] = Partiedroite.split(" ");
+                    int taillepile = tabtoken.length + tabtoken.length;
+
+
+                    for (int i = 0; i < taillepile; i++) {
+                        analyse.pop();
+                    }
+                }
                 String sommetpile = analyse.peek();
                 analyse.push(Partiegauche);
                 analyse.push(Action(sommetpile, Partiegauche));

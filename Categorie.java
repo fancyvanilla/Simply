@@ -37,11 +37,11 @@ minuscules et majuscules et renvoie « true » si les chaînes sont égales sino
      dans la liste de tous les éléments d'une énumération. Le premier numéro d'ordre est 0.
     */
     public boolean estTerminal() {
-        return ordinal()>=MIN && ordinal()<=MAX;
+        return ordinal()>=0 && ordinal()<=5;
     }
 
     public boolean estNonTerminal() {
-        return ordinal()>MAX;
+        return ordinal()>5;
     }
 }
 

@@ -2,19 +2,19 @@ package parserexemple;
 import java.util.*;
 
 public class parserIF3 {
-public String[] LRGS = {"P->PS",
+public String[] LRGS = {"P->P S",
         "P->ε",
-        "S->id=E;",
-   		"S->if(C)Selse",
-   		"S->while(C)S",
-   		"E->E+T",
+        "S->id = E ;",
+   		"S->if ( C ) S else",
+   		"S->while ( C ) S",
+   		"E->E + T",
         "E->T",
-        "T->T*F",
+        "T->T * F",
         "T->F",
-        "F->(E)",
+        "F->( E )",
         "F->id",
         "F->N",
-        "N->ND",
+        "N->N D",
         "N->D",
         "D->0",
         "D->1",
@@ -26,7 +26,7 @@ public String[] LRGS = {"P->PS",
         "D->7",
         "D->8",
         "D->9",
-        "DC->EREQ",
+        "DC->E R EQ",
         "R->==",
         "R->!=",
         "R-><",
@@ -35,7 +35,7 @@ public String[] LRGS = {"P->PS",
         "R->>=",
    		};
 public String[][] tableSLR =
-                {{"etat/VT", "id", "=", ";", "if", "(", ")","else","while","+","*","0","1","2","3","4","5","6","7","8","9","==","!=","<","<=",">",">=","$","P","P'","S","E","T","F","N","D","C","R"},
+                {{"etat/VT", "id", "=", ";", "if", "(", ")","else","while","+","*","0","1","2","3","4","5","6","7","8","9","==","!=","<","<=",">",">=","$","P'","P","S","E","T","F","N","D","C","R"},
                 {"0", "r2", "", "", "r2", "", "", "", "r2", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "r2", "", "1", "", "", "", "", "", "", "", ""},
                 {"1", "s3", "", "", "s4", "", "", "", "s5", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "acc", "", "", "2", "", "", "", "", "", "", ""},
                 {"2", "r1", "", "", "r1", "", "", "", "r1", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "r1", "", "", "", "", "", "", "", "", "", ""},
@@ -80,7 +80,7 @@ public String[][] tableSLR =
             
             String act=Action(s,ch[index]);
           
-            if (Action(s,ch[index]).charAt(0) == 's') {
+            if (Action(s,ch[index]).charAt(0) == 'r') {
                    	
                            
                 analyse.push(ch[index]);
@@ -94,9 +94,9 @@ public String[][] tableSLR =
                 AfficherSLR();
             }
             // Réduction
-            else if (Action(s,ch[index]).charAt(0) == 'r') {
+            else if (Action(s,ch[index]).charAt(0) == 's') {
                 //
-                String str = LRGS[Integer.parseInt(Action(s, ch[index]).substring(1)) - 1];
+                String str = LRGS[Integer.parseInt(Action(s, ch[index]).substring(1))-1];
 
                 String tabparties[]= str.split("->");
                 
@@ -124,7 +124,7 @@ public String[][] tableSLR =
                 AfficherSLR();
             } 
             //acceptation
-            else if (Action(s,ch[index]) == "ACC")
+            else if (Objects.equals(Action(s, ch[index]), "ACC"))
             	{
             	System.out.println("analyze SLR successfully"); 
             	break;}
@@ -143,7 +143,7 @@ public String[][] tableSLR =
     }
     public void analyzeSLnew(String []tt) {
 
-        String[] header = {"id", "=", ";", "if", "(", ")", "else", "while", "+", "*", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "==", "!=", "<", "<=", ">", ">=", "$", "P", "P'", "S", "E", "T", "F", "N", "D", "C", "R"};
+        String[] header = {"id", "=", ";", "if", "(", ")", "else", "while", "+", "*", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "==", "!=", "<", "<=", ">", ">=", "$", "P'", "P", "S", "E", "T", "F", "N", "D", "C", "R"};
 
         columnIndexMap = new HashMap<>();
 
@@ -173,12 +173,11 @@ public String[][] tableSLR =
                 analyse.push(tt[index]);
                 analyse.push(Action(s, tt[index]).substring(1));
                 index++;
-                action = "shift ";
                 AfficherSLRnew(tt,"shift ");
             }
             // Réduction
             else if (act.charAt(0) == 'r') {
-                String str = LRGS[Integer.parseInt(Action(s, tt[index]).substring(1)) - 1];
+                String str = LRGS[Integer.parseInt(Action(s, tt[index]).substring(1))-1];
 
                 String tabparties[]= str.split("->");
                 
@@ -191,9 +190,8 @@ public String[][] tableSLR =
                 if (!Partiedroite.equals("ε")) {
 
                     String tabtoken[] = Partiedroite.split(" ");
+                    System.out.println(Partiedroite);
                     int taillepile = tabtoken.length + tabtoken.length;
-
-
                     for (int i = 0; i < taillepile; i++) {
                         analyse.pop();
                     }
@@ -204,7 +202,7 @@ public String[][] tableSLR =
                 AfficherSLRnew(tt,"reduce:" + str);
             } 
             //acceptation
-            else if (Objects.equals(act, "ACC"))
+            else if (Objects.equals(act, "acc"))
             	{
             	System.out.println("analyze SLR successfully"); 
             	break;}

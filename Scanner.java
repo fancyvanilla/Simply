@@ -211,8 +211,8 @@ public UniteLexicale getOPPRel() {
                 case 1:
                     if (eof)
                         return new UniteLexicale(Categorie.OPPRel, "EGA");
-                        reculer();
-                        return new UniteLexicale(Categorie.OPPRel, "EGA");
+                    reculer();
+                    return new UniteLexicale(Categorie.OPPRel, "EGA");
 
                 case 2:
                     if (eof)
@@ -226,7 +226,7 @@ public UniteLexicale getOPPRel() {
                          else
                              etat =5;
 
-                   case 2:
+                  /** case 2:
                      if (eof)
                          break;
                     else if (caractereCourant == '=') {
@@ -242,7 +242,7 @@ public UniteLexicale getOPPRel() {
 
                           } 
                          else
-                             etat =8;
+                             etat =8;**/
 
 
 
@@ -250,39 +250,34 @@ public UniteLexicale getOPPRel() {
                  case 4:
                     if (eof)
                         return new UniteLexicale(Categorie.OPPRel, "PGE");
-                        break;
-                    else 
-                        reculer();
-                        return new UniteLexicale(Categorie.OPPRel, "PGE");
+
+                    reculer();
+                    return new UniteLexicale(Categorie.OPPRel, "PGE");
                case 5:
                     if (eof)
                         return new UniteLexicale(Categorie.OPPRel, "PGQ");
-                        break;
-                    else 
-                        reculer();
-                        return new UniteLexicale(Categorie.OPPRel, "PGQ");
+
+
+                    reculer();
+                    return new UniteLexicale(Categorie.OPPRel, "PGQ");
 
                 case 6:
                     if (eof)
                         return new UniteLexicale(Categorie.OPPRel, "PPE");
-                        break;
-                    else 
-                        reculer();
-                        return new UniteLexicale(Categorie.OPPRel, "PPE");
+
+                    reculer();
+                    return new UniteLexicale(Categorie.OPPRel, "PPE");
                  case 7:
                     if (eof)
                         return new UniteLexicale(Categorie.OPPRel, "DIF");
-                        break;
-                    else 
-                        reculer();
-                        return new UniteLexicale(Categorie.OPPRel, "DIF");
+                    reculer();
+                    return new UniteLexicale(Categorie.OPPRel, "DIF");
                  case 8:
                     if (eof)
                         return new UniteLexicale(Categorie.OPPRel, "PPQ");
-                        break;
-                    else 
-                        reculer();
-                        return new UniteLexicale(Categorie.OPPRel, "PPQ");
+
+                    reculer();
+                    return new UniteLexicale(Categorie.OPPRel, "PPQ");
 
             }
 

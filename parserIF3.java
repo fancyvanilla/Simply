@@ -1,9 +1,5 @@
 package parserexemple;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 public class parserIF3 {
 public String[] LRGS = {"P->PS",
@@ -65,7 +61,7 @@ public String[][] tableSLR =
     
     
     int index = 0;
-
+    Map<String, Integer> columnIndexMap;
    
     public void analyzeSLnew() {
     	
@@ -157,21 +153,24 @@ public String[][] tableSLR =
    
     
     public void analyzeSLnew(String []tt) {
-    	
+
+        String[] header = {"id", "=", ";", "if", "(", ")", "else", "while", "+", "*", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "==", "!=", "<", "<=", ">", ">=", "$", "P", "P'", "S", "E", "T", "F", "N", "D", "C", "R"};
+
+        columnIndexMap = new HashMap<>();
+
+        for (int i = 0; i < header.length; i++) {
+            columnIndexMap.put(header[i], i+1);
+        }
+
         action = "";
         index = 0;
-       
         analyse.push("0");
-        
-       
         System.out.println("********pile     	    Entrée            Action***********");
         this.AfficherSLRnew(tt);
     
        while(index<tt.length) 
         
         {
-        	
-    	   
           //  String s = stackState.peek();
             
             String s = analyse.peek();
@@ -179,25 +178,20 @@ public String[][] tableSLR =
             String act=Action(s,tt[index]);
           
             if (Action(s,tt[index]).charAt(0) == 's') {
-            	
-            	
+
                 //stackState.push(Action(s, ch[index]).substring(1));
                 //stackSymbol.push(ch[index]);
                 
                 analyse.push(tt[index]);
                 analyse.push(Action(s, tt[index]).substring(1));
-
                 index++;
                 action = "shift ";
-                
                 AfficherSLRnew(tt);
             }
             // Réduction
             else if (Action(s,tt[index]).charAt(0) == 'r') {
-                //
                 String str = LRGS[Integer.parseInt(Action(s, tt[index]).substring(1)) - 1];
-                int pos= str.indexOf('>');
-               
+
                 String tabparties[]= str.split("->");
                 
                 
@@ -217,10 +211,7 @@ public String[][] tableSLR =
 
                 String sommetpile = analyse.peek();
                 analyse.push(Partiegauche);
-                String tetesucc = analyse.peek();
-                
                 analyse.push(Action(sommetpile, Partiegauche));
-
                 action = "reduce:" + str;
                 AfficherSLRnew(tt);
             } 
@@ -244,18 +235,17 @@ public String[][] tableSLR =
     }
 
     public String Action(String s, String a) {
-        for (int i = 1; i <11 ; i++)
+        if (columnIndexMap.get(a)!=null)
+        return tableSLR[Integer.parseInt(s)+1][columnIndexMap.get(a)];
+        else return "err";
+
+        /**for (int i = 1; i <11 ; i++)
             if (tableSLR[i][0].equals(s))
                 for (int j = 1; j <7; j++)
                     if (tableSLR[0][j].equals(a))
                         return tableSLR[i][j];
-        return "err";
+        return "err";**/
     }
-
-    
- 
-
-
     public void AfficherSLR() {
         //  SLR
     	

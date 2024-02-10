@@ -19,7 +19,7 @@ public class Main {
 		       	System.out.println(" " + 
 		       			anaLex.fluxCaracteres.get(i));*/
 		System.out.println("***********************Analyse lexical*************************");
-		 int taille= anaLex.fluxCaracteres.size();
+		int taille= anaLex.fluxCaracteres.size();
     	String tab[]= new String[taille];
     	String ss=" ";
     	 for( int i=0; i<anaLex.fluxCaracteres.size();i++)

@@ -57,9 +57,7 @@ public String[][] tableSLR =
     
    
     public String action = "";
-    
-    
-    
+
     int index = 0;
     Map<String, Integer> columnIndexMap;
    
@@ -99,8 +97,7 @@ public String[][] tableSLR =
             else if (Action(s,ch[index]).charAt(0) == 'r') {
                 //
                 String str = LRGS[Integer.parseInt(Action(s, ch[index]).substring(1)) - 1];
-                int pos= str.indexOf('>');
-               
+
                 String tabparties[]= str.split("->");
                 
                 
@@ -144,9 +141,6 @@ public String[][] tableSLR =
         }
         
     }
-  
-   
-    
     public void analyzeSLnew(String []tt) {
 
         String[] header = {"id", "=", ";", "if", "(", ")", "else", "while", "+", "*", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "==", "!=", "<", "<=", ">", ">=", "$", "P", "P'", "S", "E", "T", "F", "N", "D", "C", "R"};
@@ -157,11 +151,10 @@ public String[][] tableSLR =
             columnIndexMap.put(header[i], i+1);
         }
 
-        action = "";
         index = 0;
         analyse.push("0");
         System.out.println("********pile     	    Entrée            Action***********");
-        this.AfficherSLRnew(tt);
+        this.AfficherSLRnew(tt,"");
     
        while(index<tt.length) 
         
@@ -172,7 +165,7 @@ public String[][] tableSLR =
             
             String act=Action(s,tt[index]);
           
-            if (Action(s,tt[index]).charAt(0) == 's') {
+            if (act.charAt(0) == 's') {
 
                 //stackState.push(Action(s, ch[index]).substring(1));
                 //stackSymbol.push(ch[index]);
@@ -181,10 +174,10 @@ public String[][] tableSLR =
                 analyse.push(Action(s, tt[index]).substring(1));
                 index++;
                 action = "shift ";
-                AfficherSLRnew(tt);
+                AfficherSLRnew(tt,"shift ");
             }
             // Réduction
-            else if (Action(s,tt[index]).charAt(0) == 'r') {
+            else if (act.charAt(0) == 'r') {
                 String str = LRGS[Integer.parseInt(Action(s, tt[index]).substring(1)) - 1];
 
                 String tabparties[]= str.split("->");
@@ -208,11 +201,10 @@ public String[][] tableSLR =
                 String sommetpile = analyse.peek();
                 analyse.push(Partiegauche);
                 analyse.push(Action(sommetpile, Partiegauche));
-                action = "reduce:" + str;
-                AfficherSLRnew(tt);
+                AfficherSLRnew(tt,"reduce:" + str);
             } 
             //acceptation
-            else if (Action(s,tt[index]) == "ACC")
+            else if (Objects.equals(act, "ACC"))
             	{
             	System.out.println("analyze SLR successfully"); 
             	break;}
@@ -244,63 +236,42 @@ public String[][] tableSLR =
     }
     public void AfficherSLR() {
         //  SLR
-    	
-    	
-    	String ss= "-------";
-    	String ss1= "-------";
+    	StringBuilder ss= new StringBuilder("-------");
+    	StringBuilder ss1= new StringBuilder("-------");
     	 int taillepile=analyse.size();
     	int taillepilediv2= taillepile /2;
-         for(int i=0;i<taillepilediv2;i++)
-     		ss=ss + "-------" ;
+        ss.append("-------".repeat(taillepilediv2));
          int tailleinput=ch.length;
-         for(int i=0;i<tailleinput;i++)
-     		ss1=ss1 + "-------" ;
-    	
-    	
-    	
-        
-       
+        ss1.append("-------".repeat(tailleinput));
+
         strInput="";
         for(int i=index; i<ch.length;i++)
         	strInput= strInput+ ch[i];
        
-        System.out.printf("%s", analyse + ss1);
+        System.out.printf("%s", analyse + ss1.toString());
         System.out.printf("%s", strInput+ ss);
         System.out.printf("%s", action);
         System.out.println();
     }
 
-    public void AfficherSLRnew(String []tt) {
+    public void AfficherSLRnew(String []tt,String action) {
         //  SLR
-    	
-    	
-    	String ss= "-------";
-    	String ss1= "-------";
-    	 int taillepile=analyse.size();
-    	int taillepilediv2= taillepile /2;
-         for(int i=0;i<taillepilediv2;i++)
-     		ss=ss + "-------" ;
-         int tailleinput=tt.length;
-         for(int i=0;i<tailleinput;i++)
-     		ss1=ss1 + "-------" ;
-    	
-    	
-    	
-        
-       
-        strInput="";
+    	StringBuilder ss= new StringBuilder("-------");
+    	StringBuilder ss1= new StringBuilder("-------");
+        ss.append("-------".repeat(analyse.size() / 2));
+        ss1.append("-------".repeat(tt.length));
+        StringBuilder strInput= new StringBuilder();
         for(int i=index; i<tt.length;i++)
-        	strInput= strInput+ tt[i];
+        	strInput.append(tt[i]);
        
-        System.out.printf("%s", analyse + ss1);
-        System.out.printf("%s", strInput+ ss);
+        System.out.printf("%s", analyse + ss1.toString());
+        System.out.printf("%s", strInput);
         System.out.printf("%s", action);
         System.out.println();
     }
 
-    public void ouput() {
-        
-        
+    public void output() {
+
         System.out.println("**********Tableau SLR¨********");
 
         for (int i = 0; i < 11 ; i++) {
@@ -310,17 +281,7 @@ public String[][] tableSLR =
             System.out.println();
         }
         System.out.println("**********Fin tableau SLR********");
-
     }
-    
-   
- 
-
-    
-    
-    
-    
-    
 
 }
 

@@ -82,8 +82,6 @@ public class Scanner {
                
 		if(caractereCourant=='<' || caractereCourant=='>' ||caractereCourant=='=')
 			return getOPPRel();
-		
-		
 		return null;
 	}
 	
@@ -135,11 +133,6 @@ public class Scanner {
 		}
 		
 	}
-
-
-
-
-
 
 public UniteLexicale getOPPAff() {
         int etat = 0;

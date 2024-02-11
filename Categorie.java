@@ -3,12 +3,14 @@ public enum Categorie{
     EOF,
     $,
     NUL,
-
     ID,
     NOMBRE,
     PV,
     OPPAff,
     OPPRel,
+    IF,
+    ELSE,
+    WHILE
     ;
 
     
@@ -16,7 +18,6 @@ public enum Categorie{
 //hey
 /*La méthode java string toLowerCase () renvoie la chaîne en minuscules. En d'autres termes,
 il convertit tous les caractères de la chaîne en minuscules. */
-
 
     public String toString() {
         return this.name().toLowerCase();

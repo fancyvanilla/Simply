@@ -31,7 +31,7 @@ public class Main {
     	 System.out.println("***********************Analyse Syntaxique*************************");**/
 		parserIF3 test22 = new parserIF3();
 		//test
-		String[] tab={"id","=","5",";","$"};
+		String[] tab={"id","=","id",";","$"};
         test22.analyzeSLnew(tab);
         
     }

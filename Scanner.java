@@ -283,7 +283,15 @@ public UniteLexicale getOPPRel() {
 
         }
 }
-
+public ArrayList<UniteLexicale> getAllLex()
+{
+    ArrayList<UniteLexicale> result= new ArrayList<UniteLexicale>();
+    while (!eof)
+    {
+        result.add(lexemeSuivant());
+    }
+    return result;
+}
 
 	@Override
 	public String toString() {

@@ -37,6 +37,7 @@ public class Scanner {
                 fluxCaracteres.add(character);
             }
             f.close();
+            caractereCourant=fluxCaracteres.getFirst();
         } catch (IOException e) {
             try {
                 System.out.println("taper votre texte ci-dessous (taper espace pour finir)");
@@ -49,34 +50,39 @@ public class Scanner {
                     fluxCaracteres.add((char) bytes);
                 }
                 reader.close();
+                caractereCourant=fluxCaracteres.getFirst();
             } catch (IOException err) {
                 err.printStackTrace();
             }
         }
     }
     public void caractereSuivant() {
-        if(indiceCourant<fluxCaracteres.size())
-            caractereCourant=fluxCaracteres.get(indiceCourant++);
+        if(indiceCourant<fluxCaracteres.size()-1) {
+            indiceCourant++;
+            caractereCourant = fluxCaracteres.get(indiceCourant);
+        }
         else
             eof=true;
     }
 
     public void reculer() {
         if(indiceCourant>0)
+        {
             indiceCourant--;
+            caractereCourant=fluxCaracteres.get(indiceCourant);
+        }
     }
 
-   public UniteLexicale lexemeSuivant() {
-		caractereSuivant();
-		
-		while(eof || Character.isWhitespace(caractereCourant)) { 
+   public UniteLexicale lexeme() {
+       while(eof || Character.isWhitespace(caractereCourant)) {
 			if (eof)
 				return new UniteLexicale(Categorie.EOF, "0");
 			caractereSuivant();
 		}
 		
-		if(Character.isLetter(caractereCourant))
-			return getID();
+		if(Character.isLetter(caractereCourant)) {
+            return getID();
+        }
 		
 		if(Character.isDigit(caractereCourant))
 			return getNombre();
@@ -90,25 +96,29 @@ public class Scanner {
 	}
 	
 	public UniteLexicale getID() {
-		int etat=0;
+        int etat=0;
 		StringBuffer sb=new StringBuffer();
 		while(true) {
 			switch(etat) {
 				case 0 : etat=1; 
-						 sb.append(caractereCourant); 
+						 sb.append(caractereCourant);
 						 break;
 				case 1 : caractereSuivant();
 						 if(eof)
 							 etat=3;
 						 else
-							 if(Character.isLetterOrDigit(caractereCourant)) 
-								 sb.append(caractereCourant);
+							 if(Character.isLetterOrDigit(caractereCourant)) {
+                                 sb.append(caractereCourant);
+                             }
 							 else
 								 etat=2;
 						 break;
-				case 2 : reculer();
+				case 2 : //System.out.println(indiceCourant);
+                         reculer();
+                         //System.out.println(caractereCourant);
 						 return new UniteLexicale(Categorie.ID, sb.toString());
 				case 3 : return new UniteLexicale(Categorie.ID, sb.toString());
+
 			}
 		}
 	}
@@ -143,66 +153,71 @@ public UniteLexicale getOPPRel() {
         while (true) {
             switch (etat) {
                 case 0:
-                    if (eof)
-                        break;
-                    else if (caractereCourant == '=') {
+                    if (caractereCourant == '=') {
                         sb.append(caractereCourant);
                         caractereSuivant();
                          etat = 1;
-
                           } else if (caractereCourant == '>') {
-                               sb.append(caractereCourant);
-                               caractereSuivant();
-                               etat = 2;
-                           }
-                          else if (caractereCourant == '<') {
                                sb.append(caractereCourant);
                                caractereSuivant();
                                etat = 3;
                            }
-                        else 
+                          else if (caractereCourant == '<') {
+                               sb.append(caractereCourant);
+                               caractereSuivant();
+                               etat = 6;
+                           }
+                          else if (caractereCourant == '!'){
+                               sb.append(caractereCourant);
+                               caractereSuivant();
+                               etat = 9;
+                    }
                         break;
-
-
                 case 1:
+                    if (!eof && caractereCourant == '=') {
+                        sb.append(caractereCourant);
+                        caractereSuivant();
+                        etat=2;
+                    }
+                    else {
+                        if (eof) return new UniteLexicale(Categorie.AFFECT, "AFFECT");
+                        reculer();
+                        return new UniteLexicale(Categorie.AFFECT, "AFFECT");
+                    }
+                    break;
+                case 2:
                     if (eof)
                         return new UniteLexicale(Categorie.OPPRel, "EGA");
                     reculer();
                     return new UniteLexicale(Categorie.OPPRel, "EGA");
 
-                case 2:
-                    if (eof)
-                        break;
-                    else if (caractereCourant == '=') {
+                case 3:
+                    if (caractereCourant == '=') {
                         sb.append(caractereCourant);
                         caractereSuivant();
-                        etat = 4 ;
-
-                          } 
-                         else
-                             etat =5;
-
-                  /** case 2:
-                     if (eof)
-                         break;
-                    else if (caractereCourant == '=') {
+                        etat = 4;
+                    }
+                    else {
+                        etat=5;
+                    }
+                    break;
+                  case 6:
+                      if (caractereCourant == '=') {
+                          sb.append(caractereCourant);
+                          caractereSuivant();
+                          etat = 7;
+                      }
+                      else {
+                          etat=8;
+                      }
+                      break;
+                case 9:
+                    if (caractereCourant == '=') {
                         sb.append(caractereCourant);
                         caractereSuivant();
-                        etat = 6 ;
-
-                          } 
-                      else if (caractereCourant == '>') {
-                         sb.append(caractereCourant);
-                         caractereSuivant();
-                         etat = 7 ;
-
-                          } 
-                         else
-                             etat =8;**/
-
-
-
-
+                        etat = 10;
+                    }
+                    break;
                  case 4:
                     if (eof)
                         return new UniteLexicale(Categorie.OPPRel, "PGE");
@@ -212,28 +227,25 @@ public UniteLexicale getOPPRel() {
                case 5:
                     if (eof)
                         return new UniteLexicale(Categorie.OPPRel, "PGQ");
-
-
                     reculer();
                     return new UniteLexicale(Categorie.OPPRel, "PGQ");
 
-                case 6:
+                case 7:
                     if (eof)
                         return new UniteLexicale(Categorie.OPPRel, "PPE");
-
                     reculer();
                     return new UniteLexicale(Categorie.OPPRel, "PPE");
-                 case 7:
+
+                 case 8:
+                    if (eof)
+                        return new UniteLexicale(Categorie.OPPRel, "PPQ");
+                    reculer();
+                    return new UniteLexicale(Categorie.OPPRel, "PPQ");
+                case 10:
                     if (eof)
                         return new UniteLexicale(Categorie.OPPRel, "DIF");
                     reculer();
                     return new UniteLexicale(Categorie.OPPRel, "DIF");
-                 case 8:
-                    if (eof)
-                        return new UniteLexicale(Categorie.OPPRel, "PPQ");
-
-                    reculer();
-                    return new UniteLexicale(Categorie.OPPRel, "PPQ");
 
             }
 
@@ -245,7 +257,10 @@ public ArrayList<UniteLexicale> getAllLex()
     ArrayList<UniteLexicale> result= new ArrayList<UniteLexicale>();
     while (!eof)
     {
-        result.add(lexemeSuivant());
+        UniteLexicale uni=lexeme();
+        System.out.println(uni.toString());
+        result.add(uni);
+        caractereSuivant();
     }
     return result;
 }
@@ -255,7 +270,6 @@ public ArrayList<UniteLexicale> getAllLex()
 		// TODO Auto-generated method stub
 		return fluxCaracteres.toString();
 	}
-
 
      }
 

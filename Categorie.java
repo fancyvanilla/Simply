@@ -10,10 +10,9 @@ public enum Categorie{
     OPPRel,
     IF,
     ELSE,
-    WHILE
+    WHILE,
+    AFFECT
     ;
-
-    
 
 //hey
 /*La méthode java string toLowerCase () renvoie la chaîne en minuscules. En d'autres termes,

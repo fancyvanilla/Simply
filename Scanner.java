@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-
 /*La ArrayListclasse est un tableau redimensionnable , qui peut être trouvé dans le java.utilpackage.
 
 La différence entre un tableau intégré et un tableau ArrayListen Java,
@@ -23,30 +22,38 @@ public class Scanner {
     public Scanner() {
         this("");
     }
-
-    // the prob is here this is supposed to read from a file and if not just read from keyboard
     public Scanner(String nomFich) {
-        BufferedReader f=null;
+        BufferedReader f;
         BufferedReader reader;
-        int car=0;
-        fluxCaracteres=new ArrayList<Character>();
-        indiceCourant=0;
-        eof=false;
-        System.out.println("taper votre texte ci-dessous (taper espace pour finir)");
-        reader=new BufferedReader(new InputStreamReader(System.in));
+        int car = 0;
+        fluxCaracteres = new ArrayList<>();
+        indiceCourant = 0;
+        eof = false;
         try {
-            int bytes;
-            while ((bytes = reader.read()) != -1) {
-                if ((char) bytes=='\n') {
-                    break;
-                }
-                fluxCaracteres.add((char)bytes);
+            f = new BufferedReader(new FileReader(nomFich));
+            int charRead;
+            while ((charRead = f.read()) != -1) {
+                char character = (char) charRead;
+                fluxCaracteres.add(character);
             }
-        } catch (IOException err) {
-            err.printStackTrace();
+            f.close();
+        } catch (IOException e) {
+            try {
+                System.out.println("taper votre texte ci-dessous (taper espace pour finir)");
+                reader = new BufferedReader(new InputStreamReader(System.in));
+                int bytes;
+                while ((bytes = reader.read()) != -1) {
+                    if ((char) bytes == '\n') {
+                        break;
+                    }
+                    fluxCaracteres.add((char) bytes);
+                }
+                reader.close();
+            } catch (IOException err) {
+                err.printStackTrace();
+            }
         }
     }
-
     public void caractereSuivant() {
         if(indiceCourant<fluxCaracteres.size())
             caractereCourant=fluxCaracteres.get(indiceCourant++);
@@ -73,9 +80,6 @@ public class Scanner {
 		
 		if(Character.isDigit(caractereCourant))
 			return getNombre();
-		
-		if(caractereCourant==':')
-			return getOPPAff();
 		
 		if(caractereCourant==';')
 			return new UniteLexicale(Categorie.PV, ";");
@@ -133,54 +137,6 @@ public class Scanner {
 		}
 		
 	}
-
-public UniteLexicale getOPPAff() {
-        int etat = 0;
-        StringBuffer sb = new StringBuffer();
-        while (true) {
-            switch (etat) {
-                case 0:
-                    if (eof)
-                        break;
-                    else if (caractereCourant == ':') {
-                        sb.append(caractereCourant);
-                        caractereSuivant();
-                        etat = 1;
-
-                    } else
-                        break;
-
-                case 1:
-                    if (eof)
-                        break;
-                    else if (caractereCourant == '=') {
-                        sb.append(caractereCourant);
-                        caractereSuivant();
-                        etat = 2;
-                        
-                    } else
-                        break;
-                
-                case 2:
-                    if (eof)
-                        etat = 3;
-                    else
-                        etat = 5;
-                case 3:
-                   
-                    return new UniteLexicale(Categorie.OPPAff, sb.toString());
-                case 4:
-                    reculer();
-                    return new UniteLexicale(Categorie.OPPAff, sb.toString());
-                
-                     
-
-            }
-
-        }
-}
-
-
 public UniteLexicale getOPPRel() {
         int etat = 0;
         StringBuffer sb = new StringBuffer();
@@ -299,6 +255,7 @@ public ArrayList<UniteLexicale> getAllLex()
 		// TODO Auto-generated method stub
 		return fluxCaracteres.toString();
 	}
-	
-	
-}
+
+
+     }
+

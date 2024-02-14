@@ -10,7 +10,8 @@ import java.util.Stack;
 public class Main {
     public static void main(String[] args) {
     	
-    	//Scanner anaLex=new Scanner();
+    	Scanner anaLex=new Scanner();
+		System.out.println(anaLex.fluxCaracteres);
 
 		//anaLex.lecture();
 		 /*  System.out.println("remplissage du tableaullll");
@@ -29,10 +30,10 @@ public class Main {
     	 for( int i=0; i<taille;i++)
 		       	System.out.println(tab[i]);
     	 System.out.println("***********************Analyse Syntaxique*************************");**/
-		parserIF3 test22 = new parserIF3();
+		/**parserIF3 test22 = new parserIF3();
 		//test
-		String[] tab={"id","=","id",";","$"};
-        test22.analyzeSLnew(tab);
+		String[] tab={"id",";","$"};
+        test22.analyzeSLnew(tab);**/
         
     }
 }

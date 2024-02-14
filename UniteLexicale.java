@@ -13,7 +13,6 @@ public class UniteLexicale {
     public Categorie getCategorie() {
         return categorie;
     }
-
     public String toString() {
         return "<"+categorie.toString()+","+lexeme+">";
     }

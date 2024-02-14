@@ -221,16 +221,12 @@ public String[][] tableSLR =
     }
 
     public String Action(String s, String a) {
-        if (columnIndexMap.get(a)!=null)
-        return tableSLR[Integer.parseInt(s)+1][columnIndexMap.get(a)];
-        else return "err";
-
-        /**for (int i = 1; i <11 ; i++)
-            if (tableSLR[i][0].equals(s))
-                for (int j = 1; j <7; j++)
-                    if (tableSLR[0][j].equals(a))
-                        return tableSLR[i][j];
-        return "err";**/
+        if (columnIndexMap.get(a) != null) {
+            String action = tableSLR[Integer.parseInt(s) + 1][columnIndexMap.get(a)];
+            if (action.isEmpty()) return "err";
+            return action;
+        }
+        return "err";
     }
     public void AfficherSLR() {
         //  SLR

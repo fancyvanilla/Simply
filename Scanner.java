@@ -5,13 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-/*La ArrayListclasse est un tableau redimensionnable , qui peut être trouvé dans le java.utilpackage.
-
-La différence entre un tableau intégré et un tableau ArrayListen Java,
-est que la taille d'un tableau ne peut pas être modifiée (si vous voulez ajouter ou supprimer des éléments dans / d'un tableau,
- vous devez en créer un nouveau).
-Alors que des éléments peuvent être ajoutés et supprimés d'un ArrayListfichier quand vous le souhaitez.
-*/
+// to do : if else () and error handling
 
 public class Scanner {
     public ArrayList<Character> fluxCaracteres;

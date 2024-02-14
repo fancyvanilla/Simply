@@ -27,55 +27,23 @@ public class Scanner {
     // the prob is here this is supposed to read from a file and if not just read from keyboard
     public Scanner(String nomFich) {
         BufferedReader f=null;
-        BufferedReader reader=null;
+        BufferedReader reader;
         int car=0;
         fluxCaracteres=new ArrayList<Character>();
         indiceCourant=0;
         eof=false;
+        System.out.println("taper votre texte ci-dessous (taper espace pour finir)");
+        reader=new BufferedReader(new InputStreamReader(System.in));
         try {
-            f=new BufferedReader(new FileReader(nomFich));
-        }
-        catch(IOException e) {
-            System.out.println("taper votre texte ci-dessous (taper exit pour finir)");
-            reader=new BufferedReader(new InputStreamReader(System.in));
-            try {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    if (line.equalsIgnoreCase("exit")) {
-                        break;
-                    }
+            int bytes;
+            while ((bytes = reader.read()) != -1) {
+                if ((char) bytes=='\n') {
+                    break;
                 }
-            } catch (IOException err) {
-                err.printStackTrace();
+                fluxCaracteres.add((char)bytes);
             }
-        }
-        try {
-            // somehow it doesn't get out of this loop
-            int charCode;
-            while ((charCode = reader.read()) != -1) {
-                char ch = (char) charCode;
-                System.out.println(ch);
-                System.out.flush(); // flush the output
-                fluxCaracteres.add(ch);
-            }
-            reader.close();
-            System.out.println("hello2");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            int charCode=reader.read();
-            while (charCode!=-1) {
-                char ch = (char) charCode;
-                fluxCaracteres.add(ch);
-                charCode=reader.read();
-            }
-            reader.close();
-            System.out.println("hello2");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (IOException err) {
+            err.printStackTrace();
         }
     }
 

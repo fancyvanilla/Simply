@@ -11,7 +11,9 @@ public enum Categorie{
     IF,
     ELSE,
     WHILE,
-    AFFECT
+    AFFECT,
+    OP,
+    CP
     ;
 
 //hey

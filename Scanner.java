@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-// to do : if else () and error handling
 
 public class Scanner {
     public ArrayList<Character> fluxCaracteres;
@@ -292,7 +291,6 @@ public ArrayList<UniteLexicale> getAllLex()
     while (!eof)
     {
         UniteLexicale uni=lexeme();
-        System.out.println(uni.toString());
         result.add(uni);
         caractereSuivant();
     }

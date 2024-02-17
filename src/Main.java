@@ -1,4 +1,5 @@
-package parserexemple;
+package parserexemple.src;
+
 import java.util.ArrayList;
 //import parserIF3
 //import TPIF3PARSER.anallex;

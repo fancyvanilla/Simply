@@ -1,4 +1,4 @@
-package parserexemple;
+package parserexemple.src;
 import java.util.*;
 
 public class parserIF3 {

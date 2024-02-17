@@ -1,5 +1,7 @@
-package parserexemple;
+package parserexemple.src;
 
+
+import parserexemple.src.Categorie;
 
 public class UniteLexicale {
     private Categorie categorie;

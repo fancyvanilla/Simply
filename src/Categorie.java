@@ -1,4 +1,4 @@
-package parserexemple;
+package parserexemple.src;
 public enum Categorie{
     EOF,
     $,

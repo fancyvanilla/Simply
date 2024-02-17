@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 // to do : if else () and error handling
 
@@ -68,13 +69,50 @@ public class Scanner {
     }
 
    public UniteLexicale lexeme() {
-       while(eof || Character.isWhitespace(caractereCourant)) {
-			if (eof)
-				return new UniteLexicale(Categorie.EOF, "0");
-			caractereSuivant();
-		}
-		
-		if(Character.isLetter(caractereCourant)) {
+       while (eof || Character.isWhitespace(caractereCourant)) {
+           if (eof)
+               return new UniteLexicale(Categorie.EOF, "0");
+           caractereSuivant();
+       }
+       if (fluxCaracteres.size() - indiceCourant>= 2 ) {
+           String result = String.valueOf(fluxCaracteres.get(indiceCourant)) + fluxCaracteres.get(indiceCourant + 1);
+           if (result.equals("if")) {
+               if (indiceCourant + 2 >= fluxCaracteres.size() - 1 || !Character.isLetter(fluxCaracteres.get(indiceCourant + 2))) {
+                   caractereSuivant();
+                   return new UniteLexicale(Categorie.IF, "if");
+               }
+           }
+       }
+       if (fluxCaracteres.size() - indiceCourant>= 5 ) {
+           String result = joinChars(fluxCaracteres.subList(indiceCourant,indiceCourant+5));
+           if (result.equals("while")) {
+               if (indiceCourant + 5 >= fluxCaracteres.size() - 1 || !Character.isLetter(fluxCaracteres.get(indiceCourant + 5))) {
+                   caractereSuivant();
+                   caractereSuivant();
+                   caractereSuivant();
+                   caractereSuivant();
+                   return new UniteLexicale(Categorie.WHILE, "while");
+               }
+           }
+       }
+       if (fluxCaracteres.size() - indiceCourant>= 4 ) {
+           String result = joinChars(fluxCaracteres.subList(indiceCourant,indiceCourant+4));
+           if (result.equals("else")) {
+               if (indiceCourant + 4 >= fluxCaracteres.size() - 1 || !Character.isLetter(fluxCaracteres.get(indiceCourant + 4))) {
+                   caractereSuivant();
+                   caractereSuivant();
+                   caractereSuivant();
+                   return new UniteLexicale(Categorie.ELSE, "else");
+               }
+           }
+       }
+       if (caractereCourant =='(') return new UniteLexicale(Categorie.OP, "(");
+       if (caractereCourant ==')') return new UniteLexicale(Categorie.CP, ")");
+       if (caractereCourant =='+') return new UniteLexicale(Categorie.OPPAff, "+");
+       if (caractereCourant =='*') return new UniteLexicale(Categorie.OPPAff, "*");
+
+
+       if(Character.isLetter(caractereCourant)) {
             return getID();
         }
 		
@@ -88,7 +126,9 @@ public class Scanner {
 			return getOPPRel();
 		return null;
 	}
-	
+
+
+
 	public UniteLexicale getID() {
         int etat=0;
 		StringBuffer sb=new StringBuffer();
@@ -174,16 +214,16 @@ public UniteLexicale getOPPRel() {
                         etat=2;
                     }
                     else {
-                        if (eof) return new UniteLexicale(Categorie.AFFECT, "AFFECT");
+                        if (eof) return new UniteLexicale(Categorie.AFFECT, "=");
                         reculer();
-                        return new UniteLexicale(Categorie.AFFECT, "AFFECT");
+                        return new UniteLexicale(Categorie.AFFECT, "=");
                     }
                     break;
                 case 2:
                     if (eof)
-                        return new UniteLexicale(Categorie.OPPRel, "EGA");
+                        return new UniteLexicale(Categorie.OPPRel, "==");
                     reculer();
-                    return new UniteLexicale(Categorie.OPPRel, "EGA");
+                    return new UniteLexicale(Categorie.OPPRel, "==");
 
                 case 3:
                     if (caractereCourant == '=') {
@@ -214,32 +254,32 @@ public UniteLexicale getOPPRel() {
                     break;
                  case 4:
                     if (eof)
-                        return new UniteLexicale(Categorie.OPPRel, "PGE");
+                        return new UniteLexicale(Categorie.OPPRel, ">=");
 
                     reculer();
-                    return new UniteLexicale(Categorie.OPPRel, "PGE");
+                    return new UniteLexicale(Categorie.OPPRel, ">=");
                case 5:
                     if (eof)
-                        return new UniteLexicale(Categorie.OPPRel, "PGQ");
+                        return new UniteLexicale(Categorie.OPPRel, ">");
                     reculer();
-                    return new UniteLexicale(Categorie.OPPRel, "PGQ");
+                    return new UniteLexicale(Categorie.OPPRel, ">");
 
                 case 7:
                     if (eof)
-                        return new UniteLexicale(Categorie.OPPRel, "PPE");
+                        return new UniteLexicale(Categorie.OPPRel, "<=");
                     reculer();
-                    return new UniteLexicale(Categorie.OPPRel, "PPE");
+                    return new UniteLexicale(Categorie.OPPRel, "<=");
 
                  case 8:
                     if (eof)
-                        return new UniteLexicale(Categorie.OPPRel, "PPQ");
+                        return new UniteLexicale(Categorie.OPPRel, "<");
                     reculer();
-                    return new UniteLexicale(Categorie.OPPRel, "PPQ");
+                    return new UniteLexicale(Categorie.OPPRel, "<");
                 case 10:
                     if (eof)
-                        return new UniteLexicale(Categorie.OPPRel, "DIF");
+                        return new UniteLexicale(Categorie.OPPRel, "!=");
                     reculer();
-                    return new UniteLexicale(Categorie.OPPRel, "DIF");
+                    return new UniteLexicale(Categorie.OPPRel, "!=");
 
             }
 
@@ -258,7 +298,15 @@ public ArrayList<UniteLexicale> getAllLex()
     }
     return result;
 }
+    public static String joinChars(List<Character> charList) {
+        StringBuilder result = new StringBuilder(charList.size());
 
+        for (Character character : charList) {
+            result.append(character);
+        }
+
+        return result.toString();
+    }
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub

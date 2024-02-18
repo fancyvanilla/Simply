@@ -1,8 +1,10 @@
+package parserexemple.src;
+
 import java.util.*;
 
 public class SemanticAnalyzer {
     // Déclaration d'une table des symboles pour stocker les types des variables
-    private Map<String, String> symbolTable;
+    private static Map<String, String> symbolTable;
 
     // Constructeur
     public SemanticAnalyzer() {
@@ -92,5 +94,6 @@ public class SemanticAnalyzer {
         };
         SemanticAnalyzer analyzer = new SemanticAnalyzer();
         analyzer.analyze(tokens);
+        System.out.println(symbolTable);
     }
 }

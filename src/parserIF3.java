@@ -300,7 +300,28 @@ public String[][] tableSLR =
     }
 
     private int Evaluate(int exprR, String op, int termR) {
-
+        switch(op){
+            case "==":
+                if (exprR==termR) return (1);
+                else return (0);
+            case "!=":
+                if (exprR!=termR) return (1);
+                else return (0);
+            case "<":
+                if (exprR<termR) return (1);
+                else return (0);
+            case "<=":
+                if (exprR<=termR) return (1);
+                else return (0);
+            case ">":
+                if (exprR>termR) return (1);
+                else return (0);
+            case ">=":
+                if (exprR>=termR) return (1);
+                else return (0);
+            default:
+                return(-1);
+        }
     }
 
     public String Action(String s, String a) {

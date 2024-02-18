@@ -1,14 +1,17 @@
 package parserexemple.src;
 import java.util.*;
 import java.util.Stack;
+import java.util.LinkedHashSet;
+
+import static java.lang.System.exit;
 
 public class parserIF3 {
 public String[] LRGS = {"P->P S",
         "P->ε",
-        "S->id = E ;",
+        "S->id = E ;",   //2
    		"S->if ( C ) S else S",
    		"S->while ( C ) S",
-   		"E->E + T",
+   		"E->E + T", //5
         "E->T",
         "T->T * F",
         "T->F",
@@ -17,7 +20,7 @@ public String[] LRGS = {"P->P S",
         "F->N",
         "N->N D",
         "N->D",
-        "D->0",
+        "D->0", //14
         "D->1",
         "D->2",
         "D->3",
@@ -26,9 +29,9 @@ public String[] LRGS = {"P->P S",
         "D->6",
         "D->7",
         "D->8",
-        "D->9",
-        "C->E R E",
-        "R->==",
+        "D->9", //23
+        "C->E R E",//24
+        "R->==",//25
         "R->!=",
         "R-><",
         "R->>",
@@ -56,8 +59,12 @@ public String[][] tableSLR =
     String ch[]= {"a", "b", "b", "a","$"};
     public String strInput ;
     
-   
+    public LinkedHashSet<String> lastId = new LinkedHashSet<>();
     public String action = "";
+
+    public Boolean ifCondition=true;
+
+    public Set<String> tokens = new HashSet<>();
 
     int index = 0;
     Map<String, Integer> columnIndexMap;
@@ -86,9 +93,6 @@ public String[][] tableSLR =
                            
                 analyse.push(ch[index]);
                 analyse.push(Action(s, ch[index]).substring(1));
-               
-                              
-              
                 index++;
                 action = "shift";
                 
@@ -142,8 +146,9 @@ public String[][] tableSLR =
         }
         
     }
-    public void analyzeSLnew(String []tt) {
+    public Map<String, Integer> analyzeSLnew(ArrayList<UniteLexicale> tt) {
         Stack<Integer> stack = new Stack<>();
+        Stack <String> stack2=new Stack<>();
         Map<String, Integer> symbolTable=new HashMap<>() ;
 
         String[] header = {"id", "=", ";", "if", "(", ")", "else", "while", "+", "*", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "==", "!=", "<", "<=", ">", ">=", "$", "P'", "P", "S", "E", "T", "F", "N", "D", "C", "R"};
@@ -155,105 +160,146 @@ public String[][] tableSLR =
         }
 
         index = 0;
+        String token="";
         analyse.push("0");
         System.out.println("********pile     	    Entrée            Action***********");
         this.AfficherSLRnew(tt,"");
     
-       while(index<tt.length) 
-        
+       while(index<tt.size())
         {
-          //  String s = stackState.peek();
-            
+            if (tt.get(index).getCategorie().equals("id"))
+            {
+                if (ifCondition) lastId.add(tt.get(index).getLexeme());
+                token="id";
+            }
+            else token=tt.get(index).getLexeme();
+            //if (token.equals(";")) ifCondition=true;
+
+            if (token.equals("else"))
+            {
+                if (!tokens.contains("else"))  {
+                    System.out.println("yes");
+                    ifCondition=!ifCondition;
+                    tokens.add("else");
+                }
+            }
+            if(tt.get(index).getCategorie().equals("opprel"))  stack2.push(token);
             String s = analyse.peek();
-            
-            String act=Action(s,tt[index]);
+            String act=Action(s,token);
           
             if (act.charAt(0) == 's') {
 
-                //stackState.push(Action(s, ch[index]).substring(1));
-                //stackSymbol.push(ch[index]);
-                
-                analyse.push(tt[index]);
-                analyse.push(Action(s, tt[index]).substring(1));
+                analyse.push(token);
+                analyse.push(Action(s, token).substring(1));
                 index++;
                 AfficherSLRnew(tt,"shift ");
             }
             // Réduction
             else if (act.charAt(0) == 'r') {
                 //semantic analysis
-                int regle=Integer.parseInt(Action(s, tt[index]).substring(1))-1;
-                switch (regle) {
-                    case 2: // S -> id = E ;
-                        symbolTable.put(tt[index], stack.pop());
-                        break;
-                    case 3: // S -> if ( C ) S
-                        int conditionResult = stack.pop();
-                        if (conditionResult == 1) {
-                            // Execute the statements inside the if block
-                            // Your implementation of Execute S goes here...
-                        }
-                        break;
-                    case 4: // S -> while ( C ) S
-                        int whileConditionResult = stack.pop();
-                        while (whileConditionResult == 1) {
-                            // Execute the statements inside the while loop
-                            // Your implementation of Execute S goes here...
-                            whileConditionResult = stack.pop();
-                        }
-                        break;
+                int regle=Integer.parseInt(Action(s, token).substring(1))-1;
+                if (ifCondition) {
+                    switch (regle) {
+                        case 2: // S -> id = E ;
+                            if(!lastId.isEmpty()) {
+                                symbolTable.put(lastId.getFirst(), stack.pop());
+                                lastId.removeFirst();
+                            }
+                            break;
+                        case 3: // S -> if ( C ) S else S
+                            break;
+                        case 4: // S -> while ( C ) S
+                            break;
+                        case 5: // E -> E + T
+                            int termVal = stack.pop();
+                            int exprVal = stack.pop();
+                            stack.push(exprVal + termVal);
+                            break;
 
-                    case 6: // E -> E + T
-                        int termVal = stack.pop();
-                        int exprVal = stack.pop();
-                        stack.push(exprVal + termVal);
-                        break;
+                        case 6: // E -> T
+                            stack.push(stack.pop());
+                            break;
 
-                    case 7: // E -> T
-                        stack.push(stack.pop());
-                        break;
+                        case 7: // T -> T * F
+                            int factorVal = stack.pop();
+                            int termValue = stack.pop();
+                            stack.push(termValue * factorVal);
+                            break;
 
-                    case 9: // T -> T * F
-                        int factorVal = stack.pop();
-                        int termValue = stack.pop();
-                        stack.push(termValue * factorVal);
-                        break;
+                        case 8: // T -> F
+                            stack.push(stack.pop());
+                            break;
 
-                    case 10: // T -> F
-                        stack.push(stack.pop());
-                        break;
+                        case 9: // F -> ( E )
+                            stack.push(stack.pop());
+                            break;
 
-                    case 11: // F -> ( E )
-                        stack.push(stack.pop());
-                        break;
+                        case 10: // F -> id
+                            if (symbolTable.get(lastId.getLast()) ==null) {
+                                System.out.println("Erreur: Vous ne pouvez pas utiliser une variable avant l'affectation!");
+                                System.exit(0);
+                            }
+                            stack.push(symbolTable.get(lastId.getLast()));
+                            lastId.removeFirst();
+                            break;
 
-                    case 12: // F -> id
-                        stack.push(symbolTable.get(tt[index]));
-                        break;
+                        case 11: // F -> N
+                            stack.push(stack.pop());
+                            break;
 
-                    case 13: // F -> N
-                        stack.push(stack.pop());
-                        break;
+                        case 12: // N -> N D
+                            int digitValue = Integer.parseInt(token);
+                            int nValue = stack.pop();
+                            stack.push(nValue * 10 + digitValue);
+                            break;
 
-                    case 14: // N -> N D
-                        int digitValue = Integer.parseInt(tt[index]);
-                        int nValue = stack.pop();
-                        stack.push(nValue * 10 + digitValue);
-                        break;
+                        case 13: // N -> D
+                            stack.push(stack.pop());
+                            break;
 
-                    case 15: // N -> D
-                        stack.push(stack.pop());
-                        break;
-
-                    case 17: // C -> E R E
-                        int termR = stack.pop();
-                        String op = tt[index];
-                        int exprR = stack.pop();
-                        int comparisonResult = Evaluate(exprR, op, termR);
-                        stack.push(comparisonResult);
-                        break;
-                    default:
-                        // Handle unknown rule
-                        break;
+                        case 24: // C -> E R E
+                            int termR = stack.pop();
+                            String op = stack2.pop();
+                            int exprR = stack.pop();
+                            int comparisonResult = Evaluate(exprR, op, termR);
+                            ifCondition = comparisonResult==1;
+                            //System.out.println(comparisonResult==1);
+                            //stack.push(comparisonResult);
+                            break;
+                        case 14: // D -> 0
+                            stack.push(0);
+                            break;
+                        case 15: // D -> 1
+                            stack.push(1);
+                            break;
+                        case 16: // D -> 2
+                            stack.push(2);
+                            break;
+                        case 17: // D -> 3
+                            stack.push(3);
+                            break;
+                        case 18: // D -> 4
+                            stack.push(4);
+                            break;
+                        case 19: // D -> 5
+                            stack.push(5);
+                            break;
+                        case 20: // D -> 6
+                            stack.push(6);
+                            break;
+                        case 21: // D -> 7
+                            stack.push(7);
+                            break;
+                        case 22: // D -> 8
+                            stack.push(8);
+                            break;
+                        case 23: // D -> 9
+                            stack.push(9);
+                            break;
+                        default:
+                            // Handle unknown rule
+                            break;
+                    }
                 }
 
                 String str = LRGS[regle];
@@ -296,9 +342,8 @@ public String[][] tableSLR =
             	}
                
         }
-        
+       return (symbolTable);
     }
-
     private int Evaluate(int exprR, String op, int termR) {
         switch(op){
             case "==":
@@ -352,15 +397,15 @@ public String[][] tableSLR =
         System.out.println();
     }
 
-    public void AfficherSLRnew(String []tt,String action) {
+    public void AfficherSLRnew(ArrayList<UniteLexicale> tt, String action) {
         //  SLR
     	StringBuilder ss= new StringBuilder("-------");
     	StringBuilder ss1= new StringBuilder("-------");
         ss.append("-------".repeat(analyse.size() / 2));
-        ss1.append("-------".repeat(tt.length));
+        ss1.append("-------".repeat(tt.size()));
         StringBuilder strInput= new StringBuilder();
-        for(int i=index; i<tt.length;i++)
-        	strInput.append(tt[i]);
+        for(int i=index; i<tt.size();i++)
+        	strInput.append(tt.get(i).getLexeme());
        
         System.out.printf("%s", analyse + ss1.toString());
         System.out.printf("%s", strInput);

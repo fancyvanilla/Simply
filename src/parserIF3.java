@@ -1,5 +1,6 @@
 package parserexemple.src;
 import java.util.*;
+import java.util.Stack;
 
 public class parserIF3 {
 public String[] LRGS = {"P->P S",
@@ -142,6 +143,8 @@ public String[][] tableSLR =
         
     }
     public void analyzeSLnew(String []tt) {
+        Stack<Integer> stack = new Stack<>();
+        Map<String, Integer> symbolTable=new HashMap<>() ;
 
         String[] header = {"id", "=", ";", "if", "(", ")", "else", "while", "+", "*", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "==", "!=", "<", "<=", ">", ">=", "$", "P'", "P", "S", "E", "T", "F", "N", "D", "C", "R"};
 
@@ -177,7 +180,83 @@ public String[][] tableSLR =
             }
             // Réduction
             else if (act.charAt(0) == 'r') {
-                String str = LRGS[Integer.parseInt(Action(s, tt[index]).substring(1))-1];
+                //semantic analysis
+                int regle=Integer.parseInt(Action(s, tt[index]).substring(1))-1;
+                switch (regle) {
+                    case 2: // S -> id = E ;
+                        symbolTable.put(tt[index], stack.pop());
+                        break;
+                    case 3: // S -> if ( C ) S
+                        int conditionResult = stack.pop();
+                        if (conditionResult == 1) {
+                            // Execute the statements inside the if block
+                            // Your implementation of Execute S goes here...
+                        }
+                        break;
+                    case 4: // S -> while ( C ) S
+                        int whileConditionResult = stack.pop();
+                        while (whileConditionResult == 1) {
+                            // Execute the statements inside the while loop
+                            // Your implementation of Execute S goes here...
+                            whileConditionResult = stack.pop();
+                        }
+                        break;
+
+                    case 6: // E -> E + T
+                        int termVal = stack.pop();
+                        int exprVal = stack.pop();
+                        stack.push(exprVal + termVal);
+                        break;
+
+                    case 7: // E -> T
+                        stack.push(stack.pop());
+                        break;
+
+                    case 9: // T -> T * F
+                        int factorVal = stack.pop();
+                        int termValue = stack.pop();
+                        stack.push(termValue * factorVal);
+                        break;
+
+                    case 10: // T -> F
+                        stack.push(stack.pop());
+                        break;
+
+                    case 11: // F -> ( E )
+                        stack.push(stack.pop());
+                        break;
+
+                    case 12: // F -> id
+                        stack.push(symbolTable.get(tt[index]));
+                        break;
+
+                    case 13: // F -> N
+                        stack.push(stack.pop());
+                        break;
+
+                    case 14: // N -> N D
+                        int digitValue = Integer.parseInt(tt[index]);
+                        int nValue = stack.pop();
+                        stack.push(nValue * 10 + digitValue);
+                        break;
+
+                    case 15: // N -> D
+                        stack.push(stack.pop());
+                        break;
+
+                    case 17: // C -> E R E
+                        int termR = stack.pop();
+                        String op = tt[index];
+                        int exprR = stack.pop();
+                        int comparisonResult = Evaluate(exprR, op, termR);
+                        stack.push(comparisonResult);
+                        break;
+                    default:
+                        // Handle unknown rule
+                        break;
+                }
+
+                String str = LRGS[regle];
 
                 String tabparties[]= str.split("->");
                 
@@ -218,6 +297,10 @@ public String[][] tableSLR =
                
         }
         
+    }
+
+    private int Evaluate(int exprR, String op, int termR) {
+
     }
 
     public String Action(String s, String a) {

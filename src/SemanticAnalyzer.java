@@ -154,6 +154,5 @@ public class SemanticAnalyzer {
         };
         SemanticAnalyzer analyzer = new SemanticAnalyzer();
         analyzer.analyze(tokens);
-        System.out.println(symbolTable);
     }
 }

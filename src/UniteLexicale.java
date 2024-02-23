@@ -11,12 +11,12 @@ public class UniteLexicale {
         this.lexeme=lexeme;
     }
 
-    public Categorie getCategorie() {
-        return categorie;
+    public String getCategorie() {
+        return categorie.toString();
     }
 
-    public Object getLexeme() {
-        return lexeme;
+    public String getLexeme() {
+        return lexeme.toString();
     }
 
     public String toString() {

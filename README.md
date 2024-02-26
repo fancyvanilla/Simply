@@ -3850,7 +3850,7 @@
         <p id="04bf3464-d1ed-4c28-b415-d730105dd8ce" class="">Note : L&#x27;ordre des états n&#x27;est pas le même et on a utilisé les termes « <em>chiffre </em>» et « <em>oprel </em>» pour représenter les chiffres et les opérations de comparaison, respectivement. </p>
         <figure id="b21081ca-5447-4c60-8610-3b85fc0e4443">
           <div class="source">
-            <a href="Rapport%20du%20Projet%20de%20Compilation%202ab5210b33a14dd79ebf3f6563c195e7/automaton.gv.pdf">https://prod-files-secure.s3.us-west-2.amazonaws.com/f8d36e31-2518-4eb7-844e-f509dc161a3d/5015a4f6-eeb9-4784-b20c-56d741a29ccf/automaton.gv.pdf</a>
+            <a href="src/automaton.png">https://prod-files-secure.s3.us-west-2.amazonaws.com/f8d36e31-2518-4eb7-844e-f509dc161a3d/5015a4f6-eeb9-4784-b20c-56d741a29ccf/automaton.gv.pdf</a>
           </div>
         </figure>
         <p id="d3a1aa07-edba-4c8e-a751-05e744a34e47" class=""></p>

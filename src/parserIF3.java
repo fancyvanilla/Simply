@@ -63,6 +63,8 @@ public String[][] tableSLR =
     public String action = "";
 
     public Boolean ifCondition=true;
+    public Boolean seenIf=false;
+    public Integer seenElse=0;
 
     public Set<String> tokens = new HashSet<>();
 
@@ -169,21 +171,20 @@ public String[][] tableSLR =
         {
             if (tt.get(index).getCategorie().equals("id"))
             {
-                if (ifCondition) lastId.add(tt.get(index).getLexeme());
+                lastId.add(tt.get(index).getLexeme());
                 token="id";
             }
             else token=tt.get(index).getLexeme();
-            //if (token.equals(";")) ifCondition=true;
 
-            if (token.equals("else"))
+            if(tt.get(index).getCategorie().equals("opprel"))  stack2.push(token);
+            if(tt.get(index).getCategorie().equals("if")) seenIf=true;
+            if(tt.get(index).getCategorie().equals("else"))
             {
-                if (!tokens.contains("else"))  {
-                    System.out.println("yes");
-                    ifCondition=!ifCondition;
-                    tokens.add("else");
+                if (seenElse==0) seenElse+=1;
+                else {
+                    if (seenElse==1) ifCondition=!ifCondition;
                 }
             }
-            if(tt.get(index).getCategorie().equals("opprel"))  stack2.push(token);
             String s = analyse.peek();
             String act=Action(s,token);
           
@@ -198,15 +199,19 @@ public String[][] tableSLR =
             else if (act.charAt(0) == 'r') {
                 //semantic analysis
                 int regle=Integer.parseInt(Action(s, token).substring(1))-1;
-                if (ifCondition) {
                     switch (regle) {
                         case 2: // S -> id = E ;
-                            if(!lastId.isEmpty()) {
-                                symbolTable.put(lastId.getFirst(), stack.pop());
-                                lastId.removeFirst();
+                            if (!seenIf || (seenIf && ifCondition)) {
+                                if (!lastId.isEmpty()) {
+                                    symbolTable.put(lastId.getFirst(), stack.pop());
+                                    System.out.println(" S -> id = E"+lastId.getLast());
+                                    lastId.removeFirst();
+                                }
                             }
                             break;
                         case 3: // S -> if ( C ) S else S
+                            seenIf=false;
+                            seenElse=0;
                             break;
                         case 4: // S -> while ( C ) S
                             break;
@@ -240,7 +245,7 @@ public String[][] tableSLR =
                                 System.exit(0);
                             }
                             stack.push(symbolTable.get(lastId.getLast()));
-                            lastId.removeFirst();
+                            lastId.removeLast();
                             break;
 
                         case 11: // F -> N
@@ -263,8 +268,6 @@ public String[][] tableSLR =
                             int exprR = stack.pop();
                             int comparisonResult = Evaluate(exprR, op, termR);
                             ifCondition = comparisonResult==1;
-                            //System.out.println(comparisonResult==1);
-                            //stack.push(comparisonResult);
                             break;
                         case 14: // D -> 0
                             stack.push(0);
@@ -300,7 +303,6 @@ public String[][] tableSLR =
                             // Handle unknown rule
                             break;
                     }
-                }
 
                 String str = LRGS[regle];
 
